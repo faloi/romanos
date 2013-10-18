@@ -19,7 +19,7 @@ class RomanConverter
 		@convertDigit aCenten, 'C', 'D', 'M'
 
 	convert: (aNumber) ->
-		@convertCenten(aNumber / 100 | 0) + @convertTen(aNumber % 100 / 10 | 0) + @convertUnit(aNumber % 10)
+		@convertCenten((aNumber / 100 | 0) % 10) + @convertTen((aNumber / 10 | 0) % 10) + @convertUnit(aNumber / 1 % 10)
 
 	generate: (symbol, quantity) ->
 		times = if (quantity == 0) then [] else [1..quantity]
