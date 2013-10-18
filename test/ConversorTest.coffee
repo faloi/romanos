@@ -1,19 +1,38 @@
 class RomanConverter
+	isBorderNumber: (aNumber) ->
+		(aNumber + 1) % 5 == 0
+
 	convert: (aNumber) ->
 		if (aNumber < 4)
-			@generateI aNumber
+			@make aNumber
 		else if (aNumber == 4)
 			'IV'
 		else if (aNumber <= 8)
-			'V' + @generateI(aNumber - 5)
+			@make aNumber
 		else if (aNumber == 9)
 			'IX'
 		else if (aNumber <= 13)
-			'X' + @generateI(aNumber - 10)
+			@make aNumber
 		else if (aNumber == 14)
 			'XIV'
+		else if (aNumber <= 18)
+			@make aNumber
+		else if (aNumber == 19)
+			'XIX'
+		else if (aNumber <= 23)
+			@make aNumber
 		else
-			'XV' + @generateI(aNumber - 15)
+			'XXIV'
+
+	make: (aNumber)	->
+		base = switch 
+			when aNumber <= 3 then arab: 0, roman: ''
+			when aNumber <= 8 then arab: 5, roman: 'V'
+			when aNumber <= 13 then arab: 10, roman: 'X'
+			when aNumber <= 18 then arab: 15, roman: 'XV'
+			when aNumber <= 23 then arab: 20, roman: 'XX'
+
+		base.roman + @generateI aNumber - base.arab
 
 	generateI: (quantity) ->
 		times = if (quantity == 0) then [] else [1..quantity]
@@ -78,3 +97,17 @@ describe "testXXX", ->
 	it 'test16', ->
 		expect(16).toEqualRoman 'XVI'
 
+	it 'test17', ->
+		expect(18).toEqualRoman 'XVIII'
+
+	it 'test18', ->
+		expect(19).toEqualRoman 'XIX'
+
+	it 'test19', ->
+		expect(20).toEqualRoman 'XX'
+
+	it 'test20', ->
+		expect(23).toEqualRoman 'XXIII'
+
+	it 'test21', ->
+		expect(24).toEqualRoman 'XXIV'
