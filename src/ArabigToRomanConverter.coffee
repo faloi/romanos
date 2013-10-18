@@ -1,3 +1,6 @@
+Number::div = (divisor) ->
+	@ / divisor | 0
+
 class ArabigToRomanConverter
 	convertDigit: (aNumber, I, V, X) ->
 		if (aNumber < 4)
@@ -19,7 +22,7 @@ class ArabigToRomanConverter
 		@convertDigit aCenten, 'C', 'D', 'M'
 
 	convert: (aNumber) ->
-		@convertCenten((aNumber / 100 | 0) % 10) + @convertTen((aNumber / 10 | 0) % 10) + @convertUnit(aNumber / 1 % 10)
+		@convertCenten(aNumber.div(100) % 10) + @convertTen(aNumber.div(10) % 10) + @convertUnit(aNumber.div(1) % 10)
 
 	generate: (symbol, quantity) ->
 		times = if (quantity == 0) then [] else [1..quantity]
