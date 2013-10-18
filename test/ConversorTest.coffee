@@ -4,8 +4,12 @@ class RomanConverter
 			@generateI aNumber
 		else if (aNumber == 4)
 			'IV'
-		else
+		else if (aNumber <= 8)
 			'V' + @generateI(aNumber - 5)
+		else if (aNumber == 9)
+			'IX'
+		else
+			'X' + @generateI(aNumber - 10)
 
 	generateI: (quantity) ->
 		times = if (quantity == 0) then [] else [1..quantity]
@@ -45,4 +49,16 @@ describe "testXXX", ->
 
 	it 'test8', ->
 		expect(8).toEqualRoman 'VIII' 		
+
+	it 'test9', ->
+		expect(9).toEqualRoman 'IX' 		
+
+	it 'test10', ->
+		expect(10).toEqualRoman 'X' 		
+
+	it 'test11', ->
+		expect(11).toEqualRoman 'XI' 		
+
+	it 'test12', ->
+		expect(12).toEqualRoman 'XII' 		
 
