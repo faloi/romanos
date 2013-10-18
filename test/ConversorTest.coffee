@@ -1,23 +1,34 @@
 class RomanConverter
-	convert1Digit: (aNumber) ->
+	convertDigit: (aNumber, I, V, X) ->
 		if (aNumber < 4)
-			@generateI aNumber
+			@generate I, aNumber
 		else if (aNumber == 4)
-			'IV'
+			"#{I}#{V}"
 		else if (aNumber <= 8)
-			'V' + @generateI aNumber - 5
+			"#{V}" + @generate I, aNumber - 5
 		else if (aNumber == 9)
-			'IX'
+			"#{I}#{X}"
+
+	convertUnit: (aUnit) ->
+		@convertDigit aUnit, 'I', 'V', 'X'
+
+	convertTen: (aTen) ->
+		@convertDigit aTen, 'X', 'L', 'C'
+
+	convertCenten: (aCenten) ->
+		@convertDigit aCenten, 'C', 'D', 'M'
 
 	convert: (aNumber) ->
 		if (aNumber < 10)
-			@convert1Digit aNumber
+			@convertUnit aNumber
+		else if (aNumber < 100)
+			@convertTen(aNumber / 10 | 0) + @convertUnit(aNumber % 10)
 		else
-			'X' + @convert aNumber - 10
+			@convertCenten(aNumber / 100 | 0) + @convertTen((aNumber % 100 - aNumber % 10) / 10) + @convertUnit(aNumber % 10)
 
-	generateI: (quantity) ->
+	generate: (symbol, quantity) ->
 		times = if (quantity == 0) then [] else [1..quantity]
-		times.reduce ((acum, _) -> acum + 'I'), ''
+		times.reduce ((acum, _) -> acum + symbol), ''
 
 beforeEach ->
 	@addMatchers
@@ -81,3 +92,16 @@ describe "testXXX", ->
 		expect(23).toEqualRoman 'XXIII'
 		expect(24).toEqualRoman 'XXIV'
 		expect(34).toEqualRoman 'XXXIV'
+
+	it 'test16', ->
+		expect(64).toEqualRoman 'LXIV'		
+		expect(80).toEqualRoman 'LXXX'		
+		expect(81).toEqualRoman 'LXXXI'		
+		expect(99).toEqualRoman 'XCIX'		
+
+	it 'test19', ->
+		expect(100).toEqualRoman 'C'
+		expect(200).toEqualRoman 'CC'		
+		expect(250).toEqualRoman 'CCL'		
+		expect(897).toEqualRoman 'DCCCXCVII'		
+		expect(999).toEqualRoman 'CMXCIX'		
