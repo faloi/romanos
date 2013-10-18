@@ -8,8 +8,12 @@ class RomanConverter
 			'V' + @generateI(aNumber - 5)
 		else if (aNumber == 9)
 			'IX'
-		else
+		else if (aNumber <= 13)
 			'X' + @generateI(aNumber - 10)
+		else if (aNumber == 14)
+			'XIV'
+		else
+			'XV' + @generateI(aNumber - 15)
 
 	generateI: (quantity) ->
 		times = if (quantity == 0) then [] else [1..quantity]
@@ -61,4 +65,16 @@ describe "testXXX", ->
 
 	it 'test12', ->
 		expect(12).toEqualRoman 'XII' 		
+
+	it 'test13', ->
+		expect(13).toEqualRoman 'XIII' 		
+
+	it 'test14', ->
+		expect(14).toEqualRoman 'XIV'
+
+	it 'test15', ->
+		expect(15).toEqualRoman 'XV'
+
+	it 'test16', ->
+		expect(16).toEqualRoman 'XVI'
 
