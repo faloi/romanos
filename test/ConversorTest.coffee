@@ -1,5 +1,5 @@
 class RomanConverter
-	convert: (aNumber) ->
+	convert1Digit: (aNumber) ->
 		if (aNumber < 4)
 			@generateI aNumber
 		else if (aNumber == 4)
@@ -8,6 +8,10 @@ class RomanConverter
 			'V' + @generateI aNumber - 5
 		else if (aNumber == 9)
 			'IX'
+
+	convert: (aNumber) ->
+		if (aNumber < 10)
+			@convert1Digit aNumber
 		else
 			'X' + @convert aNumber - 10
 
