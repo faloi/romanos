@@ -1,57 +1,15 @@
-Array::sum = ->
-	@.reduce ((acum, elem) -> acum + elem), 0
-
 class RomanConverter
-	symbols: () ->
-		[
-			arab: 0, roman: ''
-		,
-			arab: 1, roman: 'I'
-		,
-			arab: 5, roman: 'V'
-		,
-			arab: 10, roman: 'X'
-		]
-
-	findRomanFor: (aNumber) ->
-		@symbols().filter((it) -> it.arab == aNumber)[0].roman
-
-	isBorderNumber: (aNumber) ->
-		(aNumber + 1) % 5 == 0
-
 	convert: (aNumber) ->
 		if (aNumber < 4)
-			@make aNumber
+			@generateI aNumber
 		else if (aNumber == 4)
 			'IV'
 		else if (aNumber <= 8)
-			@make aNumber
+			'V' + @generateI aNumber - 5
 		else if (aNumber == 9)
 			'IX'
-		else if (aNumber <= 13)
-			@make aNumber
-		else if (aNumber == 14)
-			'XIV'
-		else if (aNumber <= 18)
-			@make aNumber
-		else if (aNumber == 19)
-			'XIX'
-		else if (aNumber <= 23)
-			@make aNumber
 		else
-			'XXIV'
-
-	make: (aNumber)	->
-		base = switch 
-			when aNumber <= 3 then [0]
-			when aNumber <= 8 then [5]
-			when aNumber <= 13 then [10]
-			when aNumber <= 18 then [10, 5]
-			when aNumber <= 23 then [10, 10]
-
-		romanBase = base.reduce ((acum, elem) => acum + @findRomanFor(elem)), ''
-
-		romanBase + @generateI aNumber - base.sum()
+			'X' + @convert aNumber - 10
 
 	generateI: (quantity) ->
 		times = if (quantity == 0) then [] else [1..quantity]
@@ -112,21 +70,10 @@ describe "testXXX", ->
 
 	it 'test15', ->
 		expect(15).toEqualRoman 'XV'
-
-	it 'test16', ->
 		expect(16).toEqualRoman 'XVI'
-
-	it 'test17', ->
 		expect(18).toEqualRoman 'XVIII'
-
-	it 'test18', ->
 		expect(19).toEqualRoman 'XIX'
-
-	it 'test19', ->
 		expect(20).toEqualRoman 'XX'
-
-	it 'test20', ->
 		expect(23).toEqualRoman 'XXIII'
-
-	it 'test21', ->
 		expect(24).toEqualRoman 'XXIV'
+		expect(34).toEqualRoman 'XXXIV'
