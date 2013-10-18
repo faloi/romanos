@@ -1,4 +1,21 @@
+Array::sum = ->
+	@.reduce ((acum, elem) -> acum + elem), 0
+
 class RomanConverter
+	symbols: () ->
+		[
+			arab: 0, roman: ''
+		,
+			arab: 1, roman: 'I'
+		,
+			arab: 5, roman: 'V'
+		,
+			arab: 10, roman: 'X'
+		]
+
+	findRomanFor: (aNumber) ->
+		@symbols().filter((it) -> it.arab == aNumber)[0].roman
+
 	isBorderNumber: (aNumber) ->
 		(aNumber + 1) % 5 == 0
 
@@ -26,13 +43,15 @@ class RomanConverter
 
 	make: (aNumber)	->
 		base = switch 
-			when aNumber <= 3 then arab: 0, roman: ''
-			when aNumber <= 8 then arab: 5, roman: 'V'
-			when aNumber <= 13 then arab: 10, roman: 'X'
-			when aNumber <= 18 then arab: 15, roman: 'XV'
-			when aNumber <= 23 then arab: 20, roman: 'XX'
+			when aNumber <= 3 then [0]
+			when aNumber <= 8 then [5]
+			when aNumber <= 13 then [10]
+			when aNumber <= 18 then [10, 5]
+			when aNumber <= 23 then [10, 10]
 
-		base.roman + @generateI aNumber - base.arab
+		romanBase = base.reduce ((acum, elem) => acum + @findRomanFor(elem)), ''
+
+		romanBase + @generateI aNumber - base.sum()
 
 	generateI: (quantity) ->
 		times = if (quantity == 0) then [] else [1..quantity]
